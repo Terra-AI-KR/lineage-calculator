@@ -17,13 +17,9 @@ export default function App() {
   });
 
   const toggleBuff = (key) => {
-    setBuffs((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setBuffs((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  // 힘 9부터 +1
   const strHitBonus = Math.max(0, Number(strStat) - 8);
 
   const buffHit =
@@ -56,48 +52,14 @@ export default function App() {
       : "#f87171";
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#111827",
-        color: "white",
-        padding: "16px",
-        fontFamily: "sans-serif",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          backgroundColor: "#1f2937",
-          borderRadius: "20px",
-          padding: "20px",
-        }}
-      >
-        <h1
-          style={{
-            textAlign: "center",
-            fontSize: "28px",
-            marginBottom: "25px",
-            color: "#facc15",
-          }}
-        >
-          리니지 클래식 명중률 계산기
-        </h1>
+    <div style={pageStyle}>
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>리니지 클래식 명중률 계산기</h1>
 
-        {/* ✅ 핵심: 모바일 자동 세로 전환 */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "16px",
-            justifyContent: "center",
-          }}
-        >
+        <div style={gridStyle}>
           {/* 캐릭터 */}
           <div style={cardStyle}>
             <SectionTitle title="캐릭터 정보" />
-
             <InputField label="레벨" value={level} onChange={setLevel} />
             <InputField label="장비 강화" value={enchant} onChange={setEnchant} />
             <InputField label="추가 명중" value={extraHit} onChange={setExtraHit} />
@@ -123,29 +85,17 @@ export default function App() {
             <InputField label="상대 AC" value={ac} onChange={setAc} />
 
             <div style={resultBox}>
-              <div style={{ color: "#9ca3af", fontSize: "13px" }}>총 명중</div>
-              <div style={{ fontSize: "40px", fontWeight: "bold" }}>
-                {totalHit}
-              </div>
+              <div style={subText}>총 명중</div>
+              <div style={bigNumber}>{totalHit}</div>
 
-              <div style={{ color: "#9ca3af", fontSize: "13px", marginTop: "6px" }}>
-                최종 적중률
-              </div>
-
-              <div style={{ fontSize: "48px", fontWeight: "bold", color: hitColor }}>
+              <div style={subText}>최종 적중률</div>
+              <div style={{ ...bigHit, color: hitColor }}>
                 {hitRate.toFixed(1)}%
               </div>
             </div>
 
-            <div
-              style={{
-                marginTop: "12px",
-                fontSize: "11px",
-                color: "#9ca3af",
-                textAlign: "center",
-              }}
-            >
-              <div>만든사람 : 군터서버 반격라인 왕혈 발트리스</div>
+            <div style={footer}>
+              <div>군터서버 반격라인 왕혈 발트리스</div>
               <div>도건님 유튜브 참고</div>
             </div>
           </div>
@@ -155,28 +105,80 @@ export default function App() {
   );
 }
 
-/* 카드 스타일 */
-const cardStyle = {
-  flex: 1,
-  minWidth: "240px",
-  maxWidth: "340px",
+/* ===== styles ===== */
+
+const pageStyle = {
+  minHeight: "100vh",
+  backgroundColor: "#0b1220",
+  padding: "24px",
+  color: "white",
 };
 
-/* 결과 박스 */
+const containerStyle = {
+  maxWidth: "1200px",
+  margin: "0 auto",
+};
+
+const titleStyle = {
+  textAlign: "center",
+  fontSize: "34px",
+  marginBottom: "30px",
+  color: "#facc15",
+};
+
+const gridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gap: "20px",
+};
+
+/* 카드 */
+const cardStyle = {
+  backgroundColor: "#1f2937",
+  borderRadius: "18px",
+  padding: "20px",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+  minWidth: "0",
+};
+
+/* 결과 */
 const resultBox = {
   marginTop: "16px",
   backgroundColor: "#111827",
   borderRadius: "14px",
-  padding: "16px",
+  padding: "18px",
   textAlign: "center",
   border: "1px solid #374151",
+};
+
+const subText = {
+  color: "#9ca3af",
+  fontSize: "13px",
+};
+
+const bigNumber = {
+  fontSize: "42px",
+  fontWeight: "bold",
+  marginBottom: "10px",
+};
+
+const bigHit = {
+  fontSize: "50px",
+  fontWeight: "bold",
+};
+
+const footer = {
+  marginTop: "12px",
+  fontSize: "12px",
+  color: "#9ca3af",
+  textAlign: "center",
 };
 
 /* 입력 */
 function InputField({ label, value, onChange }) {
   return (
     <div style={{ marginBottom: "10px" }}>
-      <div style={{ marginBottom: "4px", color: "#d1d5db", fontSize: "13px" }}>
+      <div style={{ fontSize: "13px", marginBottom: "4px", color: "#d1d5db" }}>
         {label}
       </div>
       <input
@@ -185,7 +187,7 @@ function InputField({ label, value, onChange }) {
         onChange={(e) => onChange(e.target.value)}
         style={{
           width: "100%",
-          padding: "8px",
+          padding: "10px",
           borderRadius: "8px",
           border: "1px solid #374151",
           backgroundColor: "#0f172a",
@@ -202,15 +204,14 @@ function BuffCheckbox({ label, checked, onChange }) {
     <label
       style={{
         display: "flex",
+        gap: "10px",
         alignItems: "center",
-        gap: "8px",
-        padding: "8px",
+        padding: "10px",
         border: "1px solid #374151",
         borderRadius: "10px",
         marginBottom: "8px",
         cursor: "pointer",
         backgroundColor: "#111827",
-        fontSize: "14px",
       }}
     >
       <input type="checkbox" checked={checked} onChange={onChange} />
@@ -225,7 +226,7 @@ function SectionTitle({ title }) {
     <div
       style={{
         fontSize: "18px",
-        marginBottom: "12px",
+        marginBottom: "14px",
         color: "#60a5fa",
         fontWeight: "bold",
       }}
