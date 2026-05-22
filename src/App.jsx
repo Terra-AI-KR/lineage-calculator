@@ -26,7 +26,6 @@ export default function App() {
   // 힘 9부터 +1
   const strHitBonus = Math.max(0, Number(strStat) - 8);
 
-  // 버프 합
   const buffHit =
     (buffs.holyWeapon ? 1 : 0) +
     (buffs.battleScroll ? 1 : 0) +
@@ -35,7 +34,6 @@ export default function App() {
     (buffs.wanmok ? 1 : 0) +
     (buffs.pagl ? 1 : 0);
 
-  // 총 명중
   const totalHit =
     Number(level) +
     Number(enchant) +
@@ -43,7 +41,6 @@ export default function App() {
     strHitBonus +
     buffHit;
 
-  // 적중률
   let hitRate =
     69.6 +
     (totalHit - 1) * 2.1 -
@@ -64,39 +61,41 @@ export default function App() {
         minHeight: "100vh",
         backgroundColor: "#111827",
         color: "white",
-        padding: "40px",
+        padding: "16px",
         fontFamily: "sans-serif",
       }}
     >
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "1100px",
           margin: "0 auto",
           backgroundColor: "#1f2937",
           borderRadius: "20px",
-          padding: "40px",
+          padding: "20px",
         }}
       >
         <h1
           style={{
             textAlign: "center",
-            fontSize: "36px",
-            marginBottom: "40px",
+            fontSize: "28px",
+            marginBottom: "25px",
             color: "#facc15",
           }}
         >
           리니지 클래식 명중률 계산기
         </h1>
 
+        {/* ✅ 핵심: 모바일 자동 세로 전환 */}
         <div
           style={{
             display: "flex",
-            gap: "40px",
-            alignItems: "flex-start",
+            flexWrap: "wrap",
+            gap: "16px",
+            justifyContent: "center",
           }}
         >
           {/* 캐릭터 */}
-          <div style={{ width: "260px" }}>
+          <div style={cardStyle}>
             <SectionTitle title="캐릭터 정보" />
 
             <InputField label="레벨" value={level} onChange={setLevel} />
@@ -106,7 +105,7 @@ export default function App() {
           </div>
 
           {/* 버프 */}
-          <div style={{ width: "320px" }}>
+          <div style={cardStyle}>
             <SectionTitle title="버프 / 아이템" />
 
             <BuffCheckbox label="홀리웨폰 +1" checked={buffs.holyWeapon} onChange={() => toggleBuff("holyWeapon")} />
@@ -118,49 +117,32 @@ export default function App() {
           </div>
 
           {/* 결과 */}
-          <div style={{ width: "280px" }}>
+          <div style={cardStyle}>
             <SectionTitle title="상대 정보" />
 
             <InputField label="상대 AC" value={ac} onChange={setAc} />
 
-            <div
-              style={{
-                marginTop: "25px",
-                backgroundColor: "#111827",
-                borderRadius: "16px",
-                padding: "22px",
-                textAlign: "center",
-                border: "1px solid #374151",
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                alignItems: "center",
-              }}
-            >
-              <div style={{ color: "#9ca3af", fontSize: "14px" }}>
-                총 명중
-              </div>
-
-              <div style={{ fontSize: "42px", fontWeight: "bold" }}>
+            <div style={resultBox}>
+              <div style={{ color: "#9ca3af", fontSize: "13px" }}>총 명중</div>
+              <div style={{ fontSize: "40px", fontWeight: "bold" }}>
                 {totalHit}
               </div>
 
-              <div style={{ color: "#9ca3af", fontSize: "14px" }}>
+              <div style={{ color: "#9ca3af", fontSize: "13px", marginTop: "6px" }}>
                 최종 적중률
               </div>
 
-              <div style={{ fontSize: "52px", fontWeight: "bold", color: hitColor }}>
+              <div style={{ fontSize: "48px", fontWeight: "bold", color: hitColor }}>
                 {hitRate.toFixed(1)}%
               </div>
             </div>
 
             <div
               style={{
-                marginTop: "15px",
-                fontSize: "12px",
+                marginTop: "12px",
+                fontSize: "11px",
                 color: "#9ca3af",
                 textAlign: "center",
-                lineHeight: "1.5",
               }}
             >
               <div>만든사람 : 군터서버 반격라인 왕혈 발트리스</div>
@@ -173,18 +155,37 @@ export default function App() {
   );
 }
 
+/* 카드 스타일 */
+const cardStyle = {
+  flex: 1,
+  minWidth: "240px",
+  maxWidth: "340px",
+};
+
+/* 결과 박스 */
+const resultBox = {
+  marginTop: "16px",
+  backgroundColor: "#111827",
+  borderRadius: "14px",
+  padding: "16px",
+  textAlign: "center",
+  border: "1px solid #374151",
+};
+
 /* 입력 */
 function InputField({ label, value, onChange }) {
   return (
-    <div style={{ marginBottom: "14px" }}>
-      <div style={{ marginBottom: "6px", color: "#d1d5db" }}>{label}</div>
+    <div style={{ marginBottom: "10px" }}>
+      <div style={{ marginBottom: "4px", color: "#d1d5db", fontSize: "13px" }}>
+        {label}
+      </div>
       <input
         type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          width: "180px",
-          padding: "10px",
+          width: "100%",
+          padding: "8px",
           borderRadius: "8px",
           border: "1px solid #374151",
           backgroundColor: "#0f172a",
@@ -202,13 +203,14 @@ function BuffCheckbox({ label, checked, onChange }) {
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "10px",
-        padding: "10px",
+        gap: "8px",
+        padding: "8px",
         border: "1px solid #374151",
         borderRadius: "10px",
-        marginBottom: "10px",
+        marginBottom: "8px",
         cursor: "pointer",
         backgroundColor: "#111827",
+        fontSize: "14px",
       }}
     >
       <input type="checkbox" checked={checked} onChange={onChange} />
@@ -222,8 +224,8 @@ function SectionTitle({ title }) {
   return (
     <div
       style={{
-        fontSize: "20px",
-        marginBottom: "15px",
+        fontSize: "18px",
+        marginBottom: "12px",
         color: "#60a5fa",
         fontWeight: "bold",
       }}
