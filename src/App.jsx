@@ -163,7 +163,7 @@ export default function App() {
                 lineHeight: "1.5",
               }}
             >
-              <div>만든사람 : 군터서버 발트리스</div>
+              <div>만든사람 : 군터서버 반격라인 왕혈 발트리스</div>
               <div>도건님 유튜브 참고</div>
             </div>
           </div>
