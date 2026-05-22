@@ -24,9 +24,9 @@ export default function App() {
   };
 
   // 힘 1당 명중 +1
-  const strHitBonus = Number(strStat);
+  const strHitBonus = Math.max(0, Number(strStat) - 8);
 
-  // 버프 명중 계산
+  // 버프 명중 합산
   const buffHit =
     (buffs.holyWeapon ? 1 : 0) +
     (buffs.battleScroll ? 1 : 0) +
@@ -49,10 +49,9 @@ export default function App() {
     (totalHit - 1) * 2.1 -
     (10 - Number(ac)) * 2.1;
 
-  // 최소 5%, 최대 95%
+  // 5% ~ 95% 제한
   hitRate = Math.max(5, Math.min(95, hitRate));
 
-  // 적중률 색상
   const hitColor =
     hitRate >= 70
       ? "#4ade80"
@@ -96,151 +95,66 @@ export default function App() {
             display: "flex",
             gap: "40px",
             alignItems: "flex-start",
-            flexWrap: "wrap",
           }}
         >
           {/* 1. 캐릭터 정보 */}
-          <div style={{ width: "250px" }}>
+          <div style={{ width: "260px" }}>
             <SectionTitle title="캐릭터 정보" />
 
-            <InputField
-              label="본인 레벨"
-              value={level}
-              onChange={setLevel}
-            />
-
-            <InputField
-              label="장비 강화 단계"
-              value={enchant}
-              onChange={setEnchant}
-            />
-
-            <InputField
-              label="장비 추가 명중"
-              value={extraHit}
-              onChange={setExtraHit}
-            />
-
-            <InputField
-              label="기본 힘 스탯"
-              value={strStat}
-              onChange={setStrStat}
-            />
+            <InputField label="레벨" value={level} onChange={setLevel} />
+            <InputField label="장비 강화" value={enchant} onChange={setEnchant} />
+            <InputField label="추가 명중" value={extraHit} onChange={setExtraHit} />
+            <InputField label="힘 스탯" value={strStat} onChange={setStrStat} />
           </div>
 
-          {/* 2. 버프 및 아이템 */}
+          {/* 2. 버프 */}
           <div style={{ width: "320px" }}>
-            <SectionTitle title="버프 및 아이템" />
+            <SectionTitle title="버프 / 아이템" />
 
-            <BuffCheckbox
-              label="홀리웨폰 (+1)"
-              checked={buffs.holyWeapon}
-              onChange={() => toggleBuff("holyWeapon")}
-            />
-
-            <BuffCheckbox
-              label="전투강화주문서 (+1)"
-              checked={buffs.battleScroll}
-              onChange={() => toggleBuff("battleScroll")}
-            />
-
-            <BuffCheckbox
-              label="힘업 (+5)"
-              checked={buffs.strUp}
-              onChange={() => toggleBuff("strUp")}
-            />
-
-            <BuffCheckbox
-              label="바운스 어택 (+5)"
-              checked={buffs.bounceAttack}
-              onChange={() => toggleBuff("bounceAttack")}
-            />
-
-            <BuffCheckbox
-              label="완목 (+1)"
-              checked={buffs.wanmok}
-              onChange={() => toggleBuff("wanmok")}
-            />
-
-            <BuffCheckbox
-              label="파글 (+1)"
-              checked={buffs.pagl}
-              onChange={() => toggleBuff("pagl")}
-            />
+            <BuffCheckbox label="홀리웨폰 +1" checked={buffs.holyWeapon} onChange={() => toggleBuff("holyWeapon")} />
+            <BuffCheckbox label="전투강화주문서 +1" checked={buffs.battleScroll} onChange={() => toggleBuff("battleScroll")} />
+            <BuffCheckbox label="힘업 +5" checked={buffs.strUp} onChange={() => toggleBuff("strUp")} />
+            <BuffCheckbox label="바운스어택 +5" checked={buffs.bounceAttack} onChange={() => toggleBuff("bounceAttack")} />
+            <BuffCheckbox label="완목 +1" checked={buffs.wanmok} onChange={() => toggleBuff("wanmok")} />
+            <BuffCheckbox label="파글 +1" checked={buffs.pagl} onChange={() => toggleBuff("pagl")} />
           </div>
 
-          {/* 3. 상대 AC + 결과 */}
+          {/* 3. 상대 + 결과 */}
           <div style={{ width: "280px" }}>
             <SectionTitle title="상대 정보" />
 
-            <InputField
-              label="상대 AC"
-              value={ac}
-              onChange={setAc}
-            />
+            <InputField label="상대 AC" value={ac} onChange={setAc} />
 
             <div
               style={{
-                marginTop: "30px",
+                marginTop: "25px",
                 backgroundColor: "#111827",
                 borderRadius: "16px",
-                padding: "25px",
+                padding: "20px",
                 textAlign: "center",
-                border: "2px solid #374151",
+                border: "1px solid #374151",
               }}
             >
-              <p
-                style={{
-                  color: "#9ca3af",
-                  fontSize: "16px",
-                }}
-              >
-                총 명중
-              </p>
+              <div style={{ color: "#9ca3af" }}>총 명중</div>
+              <div style={{ fontSize: "40px", margin: "10px 0" }}>{totalHit}</div>
 
-              <h2
-                style={{
-                  fontSize: "42px",
-                  margin: "10px 0 20px",
-                }}
-              >
-                {totalHit}
-              </h2>
-
-              <p
-                style={{
-                  color: "#9ca3af",
-                  fontSize: "16px",
-                }}
-              >
-                최종 적중률
-              </p>
-
-              <h1
-                style={{
-                  fontSize: "56px",
-                  marginTop: "10px",
-                  color: hitColor,
-                }}
-              >
+              <div style={{ color: "#9ca3af" }}>최종 적중률</div>
+              <div style={{ fontSize: "52px", color: hitColor }}>
                 {hitRate.toFixed(1)}%
-              </h1>
+              </div>
             </div>
 
-            {/* 제작자 표시 */}
             <div
               style={{
-                marginTop: "20px",
-                textAlign: "center",
+                marginTop: "15px",
+                fontSize: "12px",
                 color: "#9ca3af",
-                fontSize: "13px",
-                lineHeight: "1.6",
+                textAlign: "center",
+                lineHeight: "1.5",
               }}
             >
-              <div>만든사람 : 군터서버 발트리스</div>
-              <div>
-                도건님 유튜브를 참고하여 만들었음을 밝힙니다
-              </div>
+              <div>만든사람 : 군터서버 왕혈 발트리스</div>
+              <div>도건님 유튜브를 참고하여 만들었음을 밝힙니다</div>
             </div>
           </div>
         </div>
@@ -249,51 +163,29 @@ export default function App() {
   );
 }
 
-function SectionTitle({ title }) {
-  return (
-    <h2
-      style={{
-        fontSize: "24px",
-        marginBottom: "20px",
-        color: "#60a5fa",
-      }}
-    >
-      {title}
-    </h2>
-  );
-}
-
+/* 입력 컴포넌트 */
 function InputField({ label, value, onChange }) {
   return (
-    <div style={{ marginBottom: "18px" }}>
-      <label
-        style={{
-          display: "block",
-          marginBottom: "8px",
-          color: "#d1d5db",
-        }}
-      >
-        {label}
-      </label>
-
+    <div style={{ marginBottom: "14px" }}>
+      <div style={{ marginBottom: "6px", color: "#d1d5db" }}>{label}</div>
       <input
         type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
           width: "180px",
-          padding: "12px",
-          borderRadius: "10px",
+          padding: "10px",
+          borderRadius: "8px",
           border: "1px solid #374151",
-          backgroundColor: "#111827",
+          backgroundColor: "#0f172a",
           color: "white",
-          fontSize: "16px",
         }}
       />
     </div>
   );
 }
 
+/* 버프 체크박스 */
 function BuffCheckbox({ label, checked, onChange }) {
   return (
     <label
@@ -301,21 +193,32 @@ function BuffCheckbox({ label, checked, onChange }) {
         display: "flex",
         alignItems: "center",
         gap: "10px",
-        backgroundColor: "#111827",
-        padding: "14px",
-        borderRadius: "12px",
-        marginBottom: "12px",
+        padding: "10px",
         border: "1px solid #374151",
+        borderRadius: "10px",
+        marginBottom: "10px",
         cursor: "pointer",
+        backgroundColor: "#111827",
       }}
     >
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onChange}
-      />
-
+      <input type="checkbox" checked={checked} onChange={onChange} />
       {label}
     </label>
+  );
+}
+
+/* 섹션 타이틀 */
+function SectionTitle({ title }) {
+  return (
+    <div
+      style={{
+        fontSize: "20px",
+        marginBottom: "15px",
+        color: "#60a5fa",
+        fontWeight: "bold",
+      }}
+    >
+      {title}
+    </div>
   );
 }
