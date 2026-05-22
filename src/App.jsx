@@ -139,12 +139,12 @@ export default function App() {
                 alignItems: "center",
               }}
             >
-              <div style={{ color: "#9ca3af" }}>총 명중</div>
-              <div style={{ fontSize: "40px", margin: "10px 0" }}>{totalHit}</div>
+              <div style={{ color: "#9ca3af", fontSize: "14px", marginTop: "6px" }}>
+  최종 적중률
+</div>
 
-              <div style={{ color: "#9ca3af" }}>최종 적중률</div>
-              <div style={{ fontSize: "52px", color: hitColor }}>
-                {hitRate.toFixed(1)}%
+<div style={{ fontSize: "52px", fontWeight: "bold", color: hitColor }}>
+  {hitRate.toFixed(1)}%
               </div>
             </div>
 
