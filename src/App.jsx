@@ -17,10 +17,7 @@ export default function App() {
   });
 
   const toggleBuff = (key) => {
-    setBuffs((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setBuffs((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   // 힘 9부터 +1
@@ -49,204 +46,207 @@ export default function App() {
   hitRate = Math.max(5, Math.min(95, hitRate));
 
   const hitColor =
-    hitRate >= 70
-      ? "#4ade80"
-      : hitRate >= 50
-      ? "#fb923c"
-      : "#f87171";
+    hitRate >= 70 ? "#4ade80"
+    : hitRate >= 50 ? "#fb923c"
+    : "#f87171";
 
   return (
-    <div style={pageStyle}>
-      <div style={containerStyle}>
-        <h1 style={titleStyle}>리니지 클래식 명중률 계산기</h1>
+    <div style={page}>
+      <div style={container}>
+        <h1 style={title}>리니지 클래식 명중률 계산기</h1>
 
-        {/* GRID */}
-        <div style={gridStyle}>
+        <div style={grid}>
+          
           {/* 캐릭터 */}
-          <div style={cardStyle}>
+          <div style={card}>
             <SectionTitle title="캐릭터 정보" />
-            <InputField label="레벨" value={level} onChange={setLevel} />
-            <InputField label="장비 강화" value={enchant} onChange={setEnchant} />
-            <InputField label="추가 명중" value={extraHit} onChange={setExtraHit} />
-            <InputField label="힘" value={strStat} onChange={setStrStat} />
+            <Input label="레벨" value={level} set={setLevel} />
+            <Input label="장비 강화" value={enchant} set={setEnchant} />
+            <Input label="추가 명중" value={extraHit} set={setExtraHit} />
+            <Input label="힘" value={strStat} set={setStrStat} />
           </div>
 
           {/* 버프 */}
-          <div style={cardStyle}>
+          <div style={card}>
             <SectionTitle title="버프 / 아이템" />
 
-            <BuffCheckbox label="홀리웨폰 +1" checked={buffs.holyWeapon} onChange={() => toggleBuff("holyWeapon")} />
-            <BuffCheckbox label="전투강화주문서 +1" checked={buffs.battleScroll} onChange={() => toggleBuff("battleScroll")} />
-            <BuffCheckbox label="힘업 +5" checked={buffs.strUp} onChange={() => toggleBuff("strUp")} />
-            <BuffCheckbox label="바운스어택 +5" checked={buffs.bounceAttack} onChange={() => toggleBuff("bounceAttack")} />
-            <BuffCheckbox label="완목 +1" checked={buffs.wanmok} onChange={() => toggleBuff("wanmok")} />
-            <BuffCheckbox label="파글 +1" checked={buffs.pagl} onChange={() => toggleBuff("pagl")} />
+            <Check label="홀리웨폰 +1" v={buffs.holyWeapon} f={() => toggleBuff("holyWeapon")} />
+            <Check label="전투강화 +1" v={buffs.battleScroll} f={() => toggleBuff("battleScroll")} />
+            <Check label="힘업 +5" v={buffs.strUp} f={() => toggleBuff("strUp")} />
+            <Check label="바운스 +5" v={buffs.bounceAttack} f={() => toggleBuff("bounceAttack")} />
+            <Check label="완목 +1" v={buffs.wanmok} f={() => toggleBuff("wanmok")} />
+            <Check label="파글 +1" v={buffs.pagl} f={() => toggleBuff("pagl")} />
           </div>
 
           {/* 결과 */}
-          <div style={cardStyle}>
-            <SectionTitle title="상대 정보" />
+          <div style={card}>
+            <SectionTitle title="결과" />
 
-            <InputField label="상대 AC" value={ac} onChange={setAc} />
+            <Input label="상대 AC" value={ac} set={setAc} />
 
             <div style={resultBox}>
-              <div style={subText}>총 명중</div>
-              <div style={bigNumber}>{totalHit}</div>
+              <div style={sub}>총 명중</div>
+              <div style={big}>{totalHit}</div>
 
-              <div style={subText}>최종 적중률</div>
-              <div style={{ ...bigHit, color: hitColor }}>
+              <div style={sub}>최종 적중률</div>
+              <div style={{ ...hit, color: hitColor }}>
                 {hitRate.toFixed(1)}%
               </div>
             </div>
 
             <div style={footer}>
-              <div>만든사람 : 군터서버 반격라인 왕혈 발트리스</div>
-              <div>도건님 유튜브 참고</div>
+              만든사람 : 군터서버 발트리스 / 도건님 유튜브 참고
             </div>
           </div>
+
         </div>
       </div>
     </div>
   );
 }
 
-/* ===== STYLE ===== */
+/* ================= STYLE ================= */
 
-const pageStyle = {
+const page = {
   minHeight: "100vh",
-  backgroundColor: "#0b1220",
-  padding: "24px",
+  background: "#0b1220",
+  padding: "20px",
   color: "white",
 };
 
-const containerStyle = {
+const container = {
   maxWidth: "1200px",
   margin: "0 auto",
 };
 
-const titleStyle = {
+const title = {
   textAlign: "center",
-  fontSize: "34px",
-  marginBottom: "30px",
+  fontSize: "32px",
+  marginBottom: "25px",
   color: "#facc15",
 };
 
-/* 🔥 PC 3열 + 모바일 자동 */
-const gridStyle = {
+/* 🔥 핵심: 자동 반응형 (PC/모바일 자동 해결) */
+const grid = {
   display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  gap: "20px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+  gap: "16px",
 };
 
-/* 카드 */
-const cardStyle = {
-  backgroundColor: "#1f2937",
-  borderRadius: "18px",
-  padding: "20px",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
-};
-
-/* 결과 박스 */
-const resultBox = {
-  marginTop: "16px",
-  backgroundColor: "#111827",
-  borderRadius: "14px",
+const card = {
+  background: "#1f2937",
+  borderRadius: "16px",
   padding: "18px",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+};
+
+const resultBox = {
+  marginTop: "14px",
+  background: "#111827",
+  borderRadius: "12px",
+  padding: "16px",
   textAlign: "center",
   border: "1px solid #374151",
 };
 
-const subText = {
-  color: "#9ca3af",
+const sub = {
   fontSize: "13px",
+  color: "#9ca3af",
 };
 
-const bigNumber = {
-  fontSize: "42px",
+const big = {
+  fontSize: "40px",
   fontWeight: "bold",
-  marginBottom: "10px",
+  marginBottom: "8px",
 };
 
-const bigHit = {
-  fontSize: "50px",
+const hit = {
+  fontSize: "48px",
   fontWeight: "bold",
 };
 
 const footer = {
-  marginTop: "12px",
+  marginTop: "10px",
   fontSize: "12px",
   color: "#9ca3af",
   textAlign: "center",
 };
 
-/* ===== INPUT (PC 깔끔 정렬) ===== */
-function InputField({ label, value, onChange }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "10px",
-      }}
-    >
-      <div style={{ fontSize: "13px", color: "#d1d5db", minWidth: "90px" }}>
-        {label}
-      </div>
+/* ================= INPUT ================= */
 
+function Input({ label, value, set }) {
+  return (
+    <div style={inputWrap}>
+      <div style={labelStyle}>{label}</div>
       <input
         type="number"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        style={{
-          width: "120px",
-          padding: "8px",
-          borderRadius: "8px",
-          border: "1px solid #374151",
-          backgroundColor: "#0f172a",
-          color: "white",
-          textAlign: "center",
-        }}
+        onChange={(e) => set(e.target.value)}
+        style={inputStyle}
       />
     </div>
   );
 }
 
-/* 체크박스 */
-function BuffCheckbox({ label, checked, onChange }) {
+const inputWrap = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "10px",
+};
+
+const labelStyle = {
+  fontSize: "13px",
+  color: "#d1d5db",
+  minWidth: "80px",
+};
+
+const inputStyle = {
+  width: "110px",
+  padding: "6px",
+  borderRadius: "6px",
+  border: "1px solid #374151",
+  background: "#0f172a",
+  color: "white",
+  textAlign: "center",
+};
+
+/* ================= CHECK ================= */
+
+function Check({ label, v, f }) {
   return (
-    <label
-      style={{
-        display: "flex",
-        gap: "10px",
-        alignItems: "center",
-        padding: "10px",
-        border: "1px solid #374151",
-        borderRadius: "10px",
-        marginBottom: "8px",
-        cursor: "pointer",
-        backgroundColor: "#111827",
-        fontSize: "14px",
-      }}
-    >
-      <input type="checkbox" checked={checked} onChange={onChange} />
+    <label style={checkStyle}>
+      <input type="checkbox" checked={v} onChange={f} />
       {label}
     </label>
   );
 }
 
-/* 타이틀 */
+const checkStyle = {
+  display: "flex",
+  gap: "8px",
+  padding: "8px",
+  border: "1px solid #374151",
+  borderRadius: "8px",
+  marginBottom: "6px",
+  background: "#111827",
+  fontSize: "13px",
+  cursor: "pointer",
+};
+
+/* ================= TITLE ================= */
+
 function SectionTitle({ title }) {
   return (
-    <div
-      style={{
-        fontSize: "18px",
-        marginBottom: "14px",
-        color: "#60a5fa",
-        fontWeight: "bold",
-      }}
-    >
+    <div style={titleStyle}>
       {title}
     </div>
   );
 }
+
+const titleStyle = {
+  fontSize: "18px",
+  marginBottom: "12px",
+  color: "#60a5fa",
+  fontWeight: "bold",
+};
