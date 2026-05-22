@@ -61,7 +61,7 @@ export default function App() {
             <Input label="레벨" value={level} set={setLevel} />
             <Input label="장비 강화" value={enchant} set={setEnchant} />
             <Input label="추가 명중" value={extraHit} set={setExtraHit} />
-            <Input label="힘" value={strStat} set={setStrStat} />
+            <Input label="기본 힘" value={strStat} set={setStrStat} />
           </div>
 
           <div style={card}>
