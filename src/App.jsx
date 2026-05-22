@@ -130,9 +130,13 @@ export default function App() {
                 marginTop: "25px",
                 backgroundColor: "#111827",
                 borderRadius: "16px",
-                padding: "20px",
+                padding: "22px 18px",
                 textAlign: "center",
                 border: "1px solid #374151",
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+                alignItems: "center",
               }}
             >
               <div style={{ color: "#9ca3af" }}>총 명중</div>
