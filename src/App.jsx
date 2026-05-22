@@ -73,7 +73,7 @@ export default function App() {
             <Check label="홀리웨폰 +1" v={buffs.holyWeapon} f={() => toggleBuff("holyWeapon")} />
             <Check label="전투강화 +1" v={buffs.battleScroll} f={() => toggleBuff("battleScroll")} />
             <Check label="힘업 +5" v={buffs.strUp} f={() => toggleBuff("strUp")} />
-            <Check label="바운스 +5" v={buffs.bounceAttack} f={() => toggleBuff("bounceAttack")} />
+            <Check label="바운스어택 +5" v={buffs.bounceAttack} f={() => toggleBuff("bounceAttack")} />
             <Check label="완목 +1" v={buffs.wanmok} f={() => toggleBuff("wanmok")} />
             <Check label="파글 +1" v={buffs.pagl} f={() => toggleBuff("pagl")} />
           </div>
