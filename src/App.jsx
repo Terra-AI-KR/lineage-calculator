@@ -17,9 +17,13 @@ export default function App() {
   });
 
   const toggleBuff = (key) => {
-    setBuffs((prev) => ({ ...prev, [key]: !prev[key] }));
+    setBuffs((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
+  // 힘 9부터 +1
   const strHitBonus = Math.max(0, Number(strStat) - 8);
 
   const buffHit =
@@ -56,6 +60,7 @@ export default function App() {
       <div style={containerStyle}>
         <h1 style={titleStyle}>리니지 클래식 명중률 계산기</h1>
 
+        {/* GRID */}
         <div style={gridStyle}>
           {/* 캐릭터 */}
           <div style={cardStyle}>
@@ -95,7 +100,7 @@ export default function App() {
             </div>
 
             <div style={footer}>
-              <div>군터서버 반격라인 왕혈 발트리스</div>
+              <div>만든사람 : 군터서버 반격라인 왕혈 발트리스</div>
               <div>도건님 유튜브 참고</div>
             </div>
           </div>
@@ -105,7 +110,7 @@ export default function App() {
   );
 }
 
-/* ===== styles ===== */
+/* ===== STYLE ===== */
 
 const pageStyle = {
   minHeight: "100vh",
@@ -126,6 +131,7 @@ const titleStyle = {
   color: "#facc15",
 };
 
+/* 🔥 PC 3열 + 모바일 자동 */
 const gridStyle = {
   display: "grid",
   gridTemplateColumns: "repeat(3, 1fr)",
@@ -138,10 +144,9 @@ const cardStyle = {
   borderRadius: "18px",
   padding: "20px",
   boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
-  minWidth: "0",
 };
 
-/* 결과 */
+/* 결과 박스 */
 const resultBox = {
   marginTop: "16px",
   backgroundColor: "#111827",
@@ -174,24 +179,33 @@ const footer = {
   textAlign: "center",
 };
 
-/* 입력 */
+/* ===== INPUT (PC 깔끔 정렬) ===== */
 function InputField({ label, value, onChange }) {
   return (
-    <div style={{ marginBottom: "10px" }}>
-      <div style={{ fontSize: "13px", marginBottom: "4px", color: "#d1d5db" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "10px",
+      }}
+    >
+      <div style={{ fontSize: "13px", color: "#d1d5db", minWidth: "90px" }}>
         {label}
       </div>
+
       <input
         type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          width: "100%",
-          padding: "10px",
+          width: "120px",
+          padding: "8px",
           borderRadius: "8px",
           border: "1px solid #374151",
           backgroundColor: "#0f172a",
           color: "white",
+          textAlign: "center",
         }}
       />
     </div>
@@ -212,6 +226,7 @@ function BuffCheckbox({ label, checked, onChange }) {
         marginBottom: "8px",
         cursor: "pointer",
         backgroundColor: "#111827",
+        fontSize: "14px",
       }}
     >
       <input type="checkbox" checked={checked} onChange={onChange} />
